@@ -28,4 +28,8 @@ public class StudentService {
                 .map(StudentRes::toJson)
                 .toList();
     }
+
+    public StudentRes findById(Long id){
+        return StudentRes.toJson(studentRepository.findById(id).get());
+    }
 }
