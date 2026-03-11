@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.req.StudentReq;
 import com.example.demo.dto.res.StudentRes;
 import com.example.demo.entity.Student;
+import com.example.demo.repository.GroupRepository;
 import com.example.demo.repository.StudentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class StudentService {
     private StudentRepository studentRepository;
+    private GroupRepository groupRepository;
 
     public List<StudentRes> getAllStudents(){
 //        List<Student> rs = studentRepository.findAll();
@@ -31,5 +34,18 @@ public class StudentService {
 
     public StudentRes findById(Long id){
         return StudentRes.toJson(studentRepository.findById(id).get());
+    }
+
+    public StudentRes create(StudentReq req){
+        try {
+            Student s = new Student();
+            s.setName(req.getName());
+            s.setDob(req.getDob());
+            s.setMark(req.getMark());
+            s.setGroup(groupRepository.findById(req.getGroupId()).get());
+            return StudentRes.toJson(studentRepository.save(s));
+        }catch (Exception e){
+            return null;
+        }
     }
 }

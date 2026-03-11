@@ -1,12 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.req.StudentReq;
 import com.example.demo.dto.res.StudentRes;
 import com.example.demo.service.StudentService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +21,10 @@ public class StudentController {
     @GetMapping("/{id}")
     public StudentRes findStudentById(@PathVariable Long id){
         return studentService.findById(id);
+    }
+
+    @PostMapping()
+    public StudentRes createStudent(@RequestBody StudentReq req){
+        return studentService.create(req);
     }
 }
