@@ -16,6 +16,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/students")
 @AllArgsConstructor
+//@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = {"http://localhost:3000","http://localhost:3001"})
+@CrossOrigin(origins = "*")
 public class StudentController {
     private StudentService studentService;
 
