@@ -21,7 +21,7 @@ public class User implements UserDetails {
     @Column(length = 100)
     private String email;
     private String password;
-    private Long role;
+    private Long role = 0L;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
