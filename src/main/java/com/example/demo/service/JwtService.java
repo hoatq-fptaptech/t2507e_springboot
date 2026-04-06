@@ -48,8 +48,8 @@ public class JwtService {
     ) {
         return Jwts
                 .builder()
-                .claim("role",userDetails.getRole())
                 .setSubject(userDetails.getUsername())
+                .claim("role",userDetails.getRole())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
