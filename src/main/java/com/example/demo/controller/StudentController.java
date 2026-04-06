@@ -9,6 +9,7 @@ import com.example.demo.service.StudentService;
 import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class StudentController {
 //    public List<StudentRes> getAllStudents(){
 //        return studentService.getAllStudents();
 //    }
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ResponseDTO<List<StudentRes>>> getAllStudents(){
         try {
             return ResponseHandler.success(studentService.getAllStudents(),"Thành công!");

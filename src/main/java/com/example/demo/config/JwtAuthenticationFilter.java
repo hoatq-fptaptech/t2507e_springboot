@@ -1,6 +1,8 @@
 package com.example.demo.config;
 
+import com.example.demo.enums.Role;
 import com.example.demo.service.JwtService;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -45,6 +48,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
                 if(jwtService.isTokenValid(jwt,userDetails)){
                     List<GrantedAuthority> authorities = new ArrayList<>();
+                    Claims claims = jwtService.extractAllClaims(jwt);
+                    int roleValue = claims.get("role",Integer.class);
+//                    System.out.println(roleValue);
+                    Role role = Role.fromValue(roleValue);
+                    authorities.add(new SimpleGrantedAuthority("ROLE_"+role.name()));
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(
                                     userDetails,null,authorities
@@ -52,6 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     authToken.setDetails(new WebAuthenticationDetailsSource()
                             .buildDetails(request)
                     );
+                    System.out.println(authToken);
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
