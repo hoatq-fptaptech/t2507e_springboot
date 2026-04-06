@@ -2,7 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.common.ResponseHandler;
 import com.example.demo.dto.common.ResponseDTO;
+import com.example.demo.dto.req.LoginUser;
 import com.example.demo.dto.req.RegisterUser;
+import com.example.demo.dto.res.LoginResponse;
 import com.example.demo.enums.StatusCode;
 import com.example.demo.service.AuthService;
 import lombok.AllArgsConstructor;
@@ -24,6 +26,16 @@ public class AuthController {
                     "Register successfully");
         }catch (Exception e){
             return ResponseHandler.error(StatusCode.BAD_REQUEST,e.getMessage());
+        }
+    }
+    @PostMapping("/login")
+    public ResponseEntity<ResponseDTO<LoginResponse>> login(
+            @RequestBody LoginUser req){
+        try {
+            return ResponseHandler.success(authService.authenticate(req),
+                    "Login successfully");
+        }catch (Exception e){
+            return ResponseHandler.error(StatusCode.UNAUTHORIZED,e.getMessage());
         }
     }
 }
